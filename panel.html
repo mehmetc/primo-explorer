@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Primo Explore</title>
+    <script src="/js/vendor/vue.js"></script>
+    <link rel="stylesheet" href="/css/panel.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="container" v-cloak>
+            <div class="row no-margin">
+                <div class="master">
+                    <table>
+                        <thead>
+                            <th>Name</th>
+                            <th>Exists</th>
+                            <th>CSS Display</th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="directive in directives" v-on:click="loadDirective(directive.name)"  v-bind:class="[{active: (selectedDirective == directive.name)}, '']">
+                                <td> {{ directive.name }}</td>
+                                <td> {{ directive.exists }} </td>
+                                <td> {{ directive.display }} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="detail">
+                  <div class="row align-right">
+                      <button type="button" name="enableDebug" v-on:click="reloadWithDebugInfo">Reload with debug info</button>
+                      <button type="button" name="enableDebug" v-on:click="refreshDirectivesList">Refresh list</button>
+                  </div>
+                    <div class='detailHeader'>
+                        {{ selectedDirective }}
+                    </div>
+                    <div class="detailMain">
+                      <div v-for='key in Object.keys(directiveData)' class='detailItem'>
+                          <span class='key'>{{ key }}</span>:
+                          <span class='value'>{{ directiveData[key] }}</span>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/chrome/panel.js"></script>
+</body>
+
+</html>
