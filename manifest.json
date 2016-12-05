@@ -1,7 +1,12 @@
 {
   "manifest_version": 2,
   "name": "Primo Explorer",
-  "version": "0.0.1.2",
+  "version": "0.0.1.3",
+  "icons": {
+    "16": "img/primo_explorer_16.png",
+    "48": "img/primo_explorer_48.png",
+    "128": "img/primo_explorer_128.png"
+  },
   "description": "Examine the new Primo UI",
   "author": "Mehmet Celik",
   "devtools_page": "devtools.html",
