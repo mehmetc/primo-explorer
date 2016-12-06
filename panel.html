@@ -12,96 +12,124 @@
 
 <body>
     <div id="app">
-        <!-- header -->
-        <div class="row header">
-            <div class="col-xs-9 left-header">
-                <!-- filter -->
-                <div class="box">
-                    <div class="row around-xs">
-                        <div class="col-xs-12">
-                            <input type="text" name="" value="" placeholder="filter ..." v-model="searchDirective">
-                        </div>
-                    </div>
-                </div>
-                <!-- table header -->
-                <div class="row around-xs">
-                    <div class="col-xs">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <div class="row">
-                                            <div class="col-xs-11">
-                                                Directives
-                                            </div>
-                                            <div class="col-xs-1">
-                                                <nav class="box">
-                                                    <button type="button" name="button" title="Push to console" v-on:click="pushToConsole(selectedDirective)">
-                                                      <i class="material-icons">open_in_browser</i>
-                                                    </button>
+      <div v-if="primo.available">
+        <div v-if="primo.debugInfo">
+          <!-- header -->
+          <div class="row header">
+              <div class="col-xs-9 left-header">
+                  <!-- filter -->
+                  <div class="box">
+                      <div class="row around-xs">
+                          <div class="col-xs-12">
+                              <input type="text" name="" value="" placeholder="filter ..." v-model="directives.filter">
+                          </div>
+                      </div>
+                  </div>
+                  <!-- table header -->
+                  <div class="row around-xs">
+                      <div class="col-xs">
+                          <table>
+                              <thead>
+                                  <tr>
+                                      <th>
+                                          <div class="row">
+                                              <div class="col-xs-11">
+                                                  Directives
+                                              </div>
+                                              <div class="col-xs-1">
+                                                  <nav class="box">
+                                                      <button type="button" name="button" title="Push to console" v-on:click="pushDirectiveToConsole(directives.selected.name)">
+                                                        <i class="material-icons">open_in_browser</i>
+                                                      </button>
 
-                                                    <button type="button" name="button" title="Reload directive list" v-on:click="refreshDirectivesList">
-                                                      <i class="material-icons">refresh</i>
-                                                    </button>
-                                                </nav>
-                                            </div>
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <!-- right -->
-            <div class="col-xs-3 right-header">
-                <!-- nav bar -->
-                <div class="row end-xs">
-                    <nav class="box">
-                        <button type="button" name="button" title="Reload with debug info" v-on:click="reloadWithDebugInfo">
-                          <i class="material-icons">healing</i>
-                        </button>
-                    </nav>
-                </div>
-                <!-- selected directive properties -->
-                <div class="row center-xs">&nbsp;</div>
-                <div class="row center-xs">
-                    <b>{{ selectedDirective }}</b>
-                </div>
-            </div>
-        </div>
-        <!-- main -->
-        <div class="row main">
-            <div class="col-xs-9 left-main">
-                <div>
-                    <table>
-                        <tbody>
-                            <tr v-for="directive in filteredDirectives(searchDirective)" v-on:click="loadDirective(directive.name)" v-bind:class="[{active: (selectedDirective == directive.name)}, '']">
-                                <td>
-                                    <div class="row">
-                                        <div class="col-xs-11">
-                                            {{ directive.name }}
-                                        </div>
-                                        <div class="col-xs-1">
-                                            {{ directive.exists }}
-                                        </div>
-                                    </div>
+                                                      <button type="button" name="button" title="Reload directive list" v-on:click="refreshDirectivesList">
+                                                        <i class="material-icons">refresh</i>
+                                                      </button>
+                                                  </nav>
+                                              </div>
+                                          </div>
+                                      </th>
+                                  </tr>
+                              </thead>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+              <!-- right -->
+              <div class="col-xs-3 right-header">
+                  <!-- nav bar -->
+                  <div class="row end-xs">
+                      <nav class="box">
+                          <button type="button" name="button" title="Reload with debug info" v-on:click="reloadWithDebugInfo">
+                            <i class="material-icons">healing</i>
+                          </button>
+                      </nav>
+                  </div>
+                  <!-- selected directive properties -->
+                  <div class="row center-xs">&nbsp;</div>
+                  <div class="row center-xs">
+                      <b>{{ directives.selected.name }}</b>
+                  </div>
+              </div>
+          </div>
+          <!-- main -->
+          <div class="row main">
+              <div class="col-xs-9 left-main">
+                  <div>
+                      <table>
+                          <tbody>
+                              <tr v-for="directive in filteredDirectives(directives.filter)"
+                                  v-on:click="loadDirective(directive.name)"
+                                  v-bind:class="[{active: (directives.selected.name == directive.name)}, '']">
+                                  <td>
+                                      <div class="row">
+                                          <div class="col-xs-11">
+                                              {{ directive.name }}
+                                          </div>
+                                          <div class="col-xs-1">
+                                              {{ directive.exists }}
+                                          </div>
+                                      </div>
 
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col-xs-3 right-main">
-                <div v-for='key in Object.keys(directiveData)' class='row'>
-                    <div class="col-xs">
-                        <span class='key'>{{ key }}</span>:
-                        <span class='value'>{{ directiveData[key] }}</span>
-                    </div>
-                </div>
-            </div>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+              <div class="col-xs-3 right-main">
+                  <div v-for='key in Object.keys(directives.selected.scope)' class='row'>
+                      <div class="col-xs">
+                          <span class='key'>{{ key }}</span>:
+                          <span class='value'>{{ directives.selected.scope[key] }}</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
         </div>
+        <div v-else>
+
+          <div class="row center-xs">
+            <div class="col-xs-12">
+              <h1><i class="material-icons" style='font-size:144px;'>healing</i></h1>
+            </div>
+            <div class="col-xs-12">
+              <a v-on:click="reloadWithDebugInfo" href="#">Reload with debug info</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div v-else>
+        <div class="row center-xs">
+          <div class="col-xs-12">
+            <h1>Not a Primo new UI window</h1>
+          </div>
+          <div class="col-xs-12">
+            <a v-on:click="reloadExtention" href="#">reload</a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="/js/utils.js"></script>

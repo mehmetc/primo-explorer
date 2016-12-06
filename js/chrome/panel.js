@@ -1,26 +1,33 @@
 var app = new Vue({
     el: '#app',
+    created: primo.setup(),
     data: {
-        directives: {},
-        selectedDirective: '',
-        searchDirective: '',
-        directiveData: {}
+        directives:{
+          list: [],
+          filter:'',
+          selected:{name: '',
+                    scope: {}}
+        },
+        primo: {
+          available: false,
+          debugInfo: false
+        }
     },
     methods: {
         filteredDirectives: function(search) {
-            if (this.directives) {
+            if (this.directives && this.directives.list) {
                 regexp = new RegExp(search);
-                return this.directives.filter(item => regexp.test(item.name) || regexp.test(item.exists));
+                return this.directives.list.filter(item => regexp.test(item.name) || regexp.test(item.exists));
             }
         },
-        pushToConsole: function(directive, event){
+        pushDirectiveToConsole: function(directive, event){
           if (directive && directive.length > 0){
             var varName = directive.split('-').map((m, i) => { m = m.trim();return i == 0 ? m :  m[0].toUpperCase() + m.substr(1)}).join('');
-            evalCode(`var ${varName}Scope = angular.element(document.querySelector('${directive}')).scope();`)
+            evalCode(`var ${varName}Scope = angular.element(document.querySelector('${directive}')).scope();console.log("Access ${directive} as ${varName}")`)
           }
         },
         loadDirective: function(directive, event) {
-            this.selectedDirective = directive;
+            this.directives.selected.name = directive;
 
             evalCode(`
               (function(){
@@ -62,24 +69,31 @@ var app = new Vue({
                 }
               })()`,
                 function(result) {
-                    app.directiveData = result
+                    app.directives.selected.scope = result
                 },
                 function(isException) {
                     console.log(isException);
-                    app.directiveData = {
+                    app.directives.selected.scope = {
                         error: 'Oops'
                     }
                 }
             );
         },
-        reloadWithDebugInfo: function() {
-            evalCode(`angular.reloadWithDebugInfo()`);
+        reloadWithDebugInfo: function(event) {
+          var that = this;
+          event.preventDefault();
+          evalCode(`angular.reloadWithDebugInfo()`, function(){
+            that.primo.debugInfo = true;
+            //window.location.reload();
+            chrome.runtime.reload();
+            primo.setup();
+          });
+        },
+        reloadExtention: function(){
+          chrome.runtime.reload();
         },
         refreshDirectivesList: function() {
-            getDirectives();
+            primo.getDirectives();
         }
     }
 });
-
-//load directives list
-getDirectives();
