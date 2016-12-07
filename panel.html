@@ -14,6 +14,12 @@
     <div id="app">
       <div v-if="primo.available">
         <div v-if="primo.debugInfo">
+          <!-- message -->
+          <div class="row center-xs message">
+            Beware that the directives list is not automatically updated (yet).
+            <i class="material-icons" style='font-size: 12px;'>refresh</i> Refreshes it.
+            Fork the <a href="https://github.com/mehmetc/primo-explorer"> project</a>!
+          </div>
           <!-- header -->
           <div class="row header">
               <div class="col-xs-9 left-header">
@@ -38,7 +44,7 @@
                                               </div>
                                               <div class="col-xs-1">
                                                   <nav class="box">
-                                                      <button type="button" name="button" title="Push to console" v-on:click="pushDirectiveToConsole(directives.selected.name)">
+                                                      <button type="button" name="button" title="Use directive in console" v-on:click="pushDirectiveToConsole(directives.selected.name)">
                                                         <i class="material-icons">open_in_browser</i>
                                                       </button>
 

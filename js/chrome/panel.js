@@ -23,7 +23,7 @@ var app = new Vue({
         pushDirectiveToConsole: function(directive, event){
           if (directive && directive.length > 0){
             var varName = directive.split('-').map((m, i) => { m = m.trim();return i == 0 ? m :  m[0].toUpperCase() + m.substr(1)}).join('');
-            evalCode(`var ${varName}Scope = angular.element(document.querySelector('${directive}')).scope();console.log("Access ${directive} as ${varName}")`)
+            evalCode(`var ${varName}Scope = angular.element(document.querySelector('${directive}')).scope();console.log("Access ${directive} as ${varName}Scope")`)
           }
         },
         loadDirective: function(directive, event) {

@@ -16,8 +16,16 @@ button:hover {
   background-color: #eee;
 }
 
+.message {
+  position: fixed;
+  width: 100%;
+  background-color: yellow;
+  border:1px solid orange;
+}
+
 .header {
   position: fixed;
+  top: 1em;
   width:100%;
   background-color: #ddd;
   font-size: 12px;
@@ -54,7 +62,7 @@ thead > tr {
   position: absolute;
   padding:0px 10px 10px 10px;
   width: 100%;
-  top:65px;
+  top:75px;
   z-index: -1;
   font-size:14px;
 }
