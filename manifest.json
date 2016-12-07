@@ -1,14 +1,15 @@
 {
   "manifest_version": 2,
   "name": "Primo Explorer",
-  "version": "0.0.1.4",
+  "version": "0.0.1.5",
   "icons": {
     "16": "img/primo_explorer_icon_16.png",
     "48": "img/primo_explorer_icon_48.png",
     "128": "img/primo_explorer_icon_128.png"
   },
-  "description": "Examine the new Primo UI",
+  "description": "This is an explorer/debugger for the new Primo UI.",
   "author": "Mehmet Celik",
+  "homepage_url": "https://github.com/mehmetc/primo-explorer",
   "devtools_page": "devtools.html",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "permissions": [
