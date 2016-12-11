@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Primo Explorer",
-  "version": "0.0.1.5",
+  "version": "0.0.1.6",
   "icons": {
     "16": "img/primo_explorer_icon_16.png",
     "48": "img/primo_explorer_icon_48.png",

@@ -66,14 +66,16 @@ var primo = {
 
       directives = directives.concat(afterDirectives).sort();
       directives.forEach(function(directive){
-        var t = document.querySelector(directive);
-        var directive_exists = false;      
-        if (t) {
+        var t = document.querySelectorAll(directive);
+        var directive_exists = false;
+        if (t.length > 0) {
           directive_exists = true;
         }
-        result.push({name: directive, exists:directive_exists})
+        result.push({name: directive, exists:directive_exists, count: t.length});
       });
       return result;
     })();`,function(result){app.directives.list = result}, function(isException){app.directives.list = {error: 'oops'}});
   }
 }
+
+//a=Array.from(document.querySelectorAll('*')).filter((v,i,a) => /^prm-/.test(v.localName))

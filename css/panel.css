@@ -17,7 +17,7 @@ html, body {
     background-color: #ddd;
     display: flex;
     position: relative;
-    height: 50px;
+    height: 30px;
     z-index: 10;
     align-items: center;
     justify-content: center;
@@ -33,8 +33,8 @@ html, body {
     width: 100%;
     backface-visibility: hidden;
     will-change: overflow;
-    margin-top: -50px;
-    padding-top: 50px;
+    margin-top: -30px;
+    padding-top: 30px;
 }
 
 .left, .right, .middle {
@@ -169,4 +169,14 @@ input {
 
 .data_item_value {
     color: rgb(196, 26, 22);
+}
+
+.data_item_part {
+  font-size:0.8em;
+  color: #ddd;
+}
+
+.button:hover {
+  border:none;
+  background-color: #ddd;
 }

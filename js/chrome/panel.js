@@ -2,15 +2,19 @@ var app = new Vue({
     el: '#app',
     created: primo.setup(),
     data: {
-        directives:{
-          list: [],
-          filter:'',
-          selected:{name: '',
-                    scope: {}}
+        directives: {
+            list: [],
+            filter: '',
+            selected: {
+                name: '',
+                count: 0,
+                current: 0,
+                scope: {}
+            }
         },
         primo: {
-          available: false,
-          debugInfo: false
+            available: false,
+            debugInfo: false
         }
     },
     methods: {
@@ -20,18 +24,31 @@ var app = new Vue({
                 return this.directives.list.filter(item => regexp.test(item.name) || regexp.test(item.exists));
             }
         },
-        pushDirectiveToConsole: function(directive, event){
-          if (directive && directive.length > 0){
-            var varName = directive.split('-').map((m, i) => { m = m.trim();return i == 0 ? m :  m[0].toUpperCase() + m.substr(1)}).join('');
-            evalCode(`var ${varName}Scope = angular.element(document.querySelector('${directive}')).scope();console.log("Access ${directive} as ${varName}Scope")`)
-          }
+        pushDirectiveToConsole: function(directive, event) {
+            if (directive && directive.name.length > 0) {
+                var varName = directive.name.split('-').map((m, i) => {
+                    m = m.trim();
+                    return i == 0 ? m : m[0].toUpperCase() + m.substr(1)
+                }).join('');
+                evalCode(`var ${varName}Scope = angular.element(document.querySelectorAll('${directive.name}')[${directive.current -1}]).scope();console.log("Access ${directive} as ${varName}Scope")`)
+            }
+            event.preventDefault();
         },
-        loadDirective: function(directive, event) {
-            this.directives.selected.name = directive;
+        loadDirective: function(directive, index, event) {
+            if (index == null || index <= 0) {
+              index = 1;
+            }
+
+            if (index > directive.count) {
+              index = directive.count
+            }
+            this.directives.selected.name = directive.name;
+            this.directives.selected.count = directive.count;
+            this.directives.selected.current = index;
 
             evalCode(`
               (function(){
-                var scope = angular.element(document.querySelector('${directive}')).scope();
+                var scope = angular.element(document.querySelectorAll('${this.directives.selected.name}')[${this.directives.selected.current - 1}]).scope();
 
                 if (scope) {
                   var rawController = scope.ctrl;
@@ -80,20 +97,21 @@ var app = new Vue({
             );
         },
         reloadWithDebugInfo: function(event) {
-          var that = this;
-          event.preventDefault();
-          evalCode(`angular.reloadWithDebugInfo()`, function(){
-            that.primo.debugInfo = true;
-            //window.location.reload();
-            chrome.runtime.reload();
-            primo.setup();
-          });
+            var that = this;
+            event.preventDefault();
+            evalCode(`angular.reloadWithDebugInfo()`, function() {
+                that.primo.debugInfo = true;
+                chrome.runtime.reload();
+                primo.setup();
+            });
         },
-        reloadExtention: function(){
-          chrome.runtime.reload();
+        reloadExtention: function() {
+            chrome.runtime.reload();
         },
         refreshDirectivesList: function() {
+            //window.respond('Hello from panel');
             primo.getDirectives();
+            this.loadDirective(this.directives.selected, 1);
         }
     }
 });

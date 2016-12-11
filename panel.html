@@ -30,11 +30,10 @@
                             </span>
                         </div>
                         <div class="inline_data">
-                            <div class="data_item" v-for="directive in filteredDirectives(directives.filter)"
-                                 v-on:click="loadDirective(directive.name)"
-                                 v-bind:class="[{data_item_active: (directives.selected.name == directive.name)}, '']">
-                              <span class = "circle" v-bind:class="[directive.exists ? 'libis_green' : 'libis_grey']">&nbsp;&nbsp;</span>
-                              <span>{{ directive.name }}</span>
+                            <div class="data_item" v-for="directive in filteredDirectives(directives.filter)" v-on:click="loadDirective(directive, 1)" v-bind:class="[{data_item_active: (directives.selected.name == directive.name)}, '']">
+                                <span class="circle" v-bind:class="[directive.exists ? 'libis_green' : 'libis_grey']">&nbsp;&nbsp;</span>
+                                <span>{{ directive.name }}</span>
+                                <span class="data_item_part">({{ directive.count }})</span>
                             </div>
                         </div>
                     </div>
@@ -45,20 +44,33 @@
                             <span>{{ directives.selected.name }}</span>
                             <span>&nbsp;</span>
                         </div>
+                        <div class="inline_header" v-show="directives.selected.count > 0">
+                            <span>&nbsp;</span>
+                            <span>
+                              <span v-on:click='loadDirective(directives.selected, directives.selected.current - 1)'>&#x25C0;</span>
+                              <span>{{ directives.selected.current }} / {{ directives.selected.count }}</span>
+                              <span v-on:click='loadDirective(directives.selected, directives.selected.current + 1)'>&#x25B6;</span>
+                            </span>
+                            <span>
+                              <a href="#" title="Use directive in console" v-on:click="pushDirectiveToConsole(directives.selected)">
+                                <i class="material-icons button" style="color:black;font-size:1.5em;padding:5px;">open_in_browser</i>
+                              </a>
+                            </span>
+                        </div>
                         <div class="inline_data">
-                          <div v-for='key in Object.keys(directives.selected.scope)' class='data_item'>
-                              <div>
-                                  <span class='data_item_key'>{{ key }}</span>:
-                                  <span class='data_item_value'>{{ directives.selected.scope[key] }}</span>
-                              </div>
-                          </div>
+                            <div v-for='key in Object.keys(directives.selected.scope)' class='data_item'>
+                                <div>
+                                    <span class='data_item_key'>{{ key }}</span>:
+                                    <span class='data_item_value'>{{ directives.selected.scope[key] }}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="footer">
                     <div class="libis_oneline">
-                        &copy; 2016 <a href="http://www.libis.be">LIBIS &#x25B8; &#x25BE;</a>
+                        &copy; 2016 <a href="http://www.libis.be">LIBIS</a>
                     </div>
                     <div class="libis_dots">
                         <div class="circle libis_grey">&nbsp;</div>
@@ -70,17 +82,17 @@
                 </div>
             </div>
             <div v-else>
-              <div class="modal">
-                  <h1><i class="material-icons" style='font-size:144px;'>healing</i></h1>
-                  <a v-on:click="reloadWithDebugInfo" href="#">Reload with debug info</a>
-              </div>
+                <div class="modal">
+                    <h1><i class="material-icons" style='font-size:144px;'>healing</i></h1>
+                    <a v-on:click="reloadWithDebugInfo" href="#">Reload with debug info</a>
+                </div>
             </div>
         </div>
         <div v-else>
-          <div class="modal">
-              <h1>Not a Primo new UI window</h1>
-              <a v-on:click="reloadExtention" href="#">reload</a>
-          </div>
+            <div class="modal">
+                <h1>Not a Primo new UI window</h1>
+                <a v-on:click="reloadExtention" href="#">reload</a>
+            </div>
         </div>
     </div>
 
