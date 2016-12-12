@@ -1,7 +1,8 @@
 # ![Logo](img/primo_explorer_icon_128.png)
 
 
-New Primo UI Chrome extension. (This is a proof of concept.) 
+New Primo UI Chrome extension. This is an experiment, currently it shows the defined directives(grey) and the instantiated directives(green).
+It shows the first level of the directive and you can push the directive into a variable so it can be used in the console.
 
 
 ![Primo-Explorer](doc/overview.png)
