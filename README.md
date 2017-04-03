@@ -1,3 +1,7 @@
+# __This is deprecated since the February 2017 release.__
+## __Please take a look at [primo-explore-dom](https://github.com/mehmetc/primo-explore-dom)__
+
+
 # ![Logo](img/primo_explorer_icon_128.png)
 
 
